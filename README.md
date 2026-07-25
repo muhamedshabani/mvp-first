@@ -22,13 +22,36 @@ impressive **today**.
 - Keeps a small, non-negotiable honesty/safety line: label it a prototype, no real sensitive
   data, no secrets in client bundles.
 
+## How it's structured
+
+`SKILL.md` stays lean — the philosophy, the decision filter, and the workflow. Depth lives in
+`references/`, loaded only when it's relevant (the same progressive-disclosure pattern good
+skills use), and reusable output lives in `assets/`:
+
+```
+mvp-first/
+├── SKILL.md              # the router: philosophy + "pick a target, open its playbook"
+├── references/
+│   ├── web.md            # Next.js + Tailwind + shadcn → Vercel URL (also the fallback for anything)
+│   ├── mobile.md         # Expo (iOS + Android) → Expo Go link / web build
+│   ├── desktop.md        # web-as-desktop by default; Tauri only if truly native
+│   ├── games.md          # web game (Phaser/three.js) or WebGL export → URL
+│   └── cli.md            # wrap the tiny real logic in a hosted web playground
+└── assets/
+    └── mockdata.ts       # zero-dependency, seeded fake-data generator dropped into the demo
+```
+
+Each playbook has the exact scaffold commands, the deploy step, and the traps to skip. There are
+deliberately **no benchmarks, engines, or build scripts** — this skill ships judgment, not an
+algorithm, so bundling code for its own sake would just be ceremony.
+
 ## Install
 
-Copy the skill into your personal Claude Code skills directory:
+Copy the whole skill folder into your personal Claude Code skills directory:
 
 ```bash
 mkdir -p ~/.claude/skills/mvp-first
-cp SKILL.md ~/.claude/skills/mvp-first/SKILL.md
+cp -R SKILL.md references assets ~/.claude/skills/mvp-first/
 ```
 
 ## Use

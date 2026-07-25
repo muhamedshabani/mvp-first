@@ -37,47 +37,28 @@ what they *do* see: the happy path, believable data, and something they can actu
 
 That's the whole philosophy. When in doubt, fake it and move on.
 
-## Pick the fastest path to a shareable demo — by target
+## Pick the target, then open its playbook
 
-A demo is only useful if the audience can experience it. The most shareable thing in the
-world is a **URL**, so there's a golden rule that cuts across every platform:
+There's one rule that cuts across every platform:
 
 > **If the product's whole point isn't the native platform, build it as a web experience.**
-> A link you can text to anyone beats a build they have to install every time. Only go
-> native when "it's a real iOS/desktop/console app" is itself the thing being demoed.
+> A link you can text to anyone beats a build someone has to install. Only go native when
+> "it's a real iOS/desktop/console app" is itself the thing being demoed.
 
-Default paths (use these without deliberating; escalate off them only when the demo truly
-requires it):
+Match the request to a target and read that **one** playbook before building — each has the
+exact scaffold commands, the deploy step, and the traps that waste time:
 
-| Target | Fastest demo path | How it's shared |
+| The request is a… | Read | Default fast path |
 | --- | --- | --- |
-| **Web app** (default when unspecified) | Next.js + TS + Tailwind + shadcn/ui | Deploy to Vercel → live URL |
-| **Mobile — iOS/Android** | Expo (React Native), one codebase for both | Expo → published link + QR openable in Expo Go; or `expo export -p web` for a plain URL |
-| **Desktop app** | A web app styled like a desktop UI; only reach for Tauri/Electron if native windows/menus/OS APIs are the point | Web URL; or a packaged build + a short screen recording |
-| **Game** | Web game — Phaser / three.js / plain canvas. For Unity/Godot, export to **WebGL** | Deploy the build to a URL |
-| **CLI / API / backend tool** | Keep the real logic tiny; wrap it in a one-page hosted web playground so the audience can *click*, not install | Deploy the playground → URL |
-| **Browser extension** | A normal web page that mimics the extension's panel/popup | Web URL (skip the store) |
-| **Something exotic** (hardware, kiosk, TV, watch) | Simulate the interface as a web page sized to the device | Web URL |
+| Web app, SaaS, dashboard, landing, tool-with-a-UI | [references/web.md](references/web.md) | Next.js + Tailwind + shadcn → Vercel URL |
+| iOS / Android / cross-platform mobile app | [references/mobile.md](references/mobile.md) | Expo → Expo Go link + QR, or web build URL |
+| Desktop app | [references/desktop.md](references/desktop.md) | Web styled as desktop; Tauri only if truly native |
+| Game | [references/games.md](references/games.md) | Web game (Phaser/three.js) or WebGL export → URL |
+| CLI, API, backend tool, library | [references/cli.md](references/cli.md) | Wrap the tiny real logic in a hosted web playground |
+| Browser extension, kiosk, TV, watch, exotic | [references/web.md](references/web.md) | Simulate the interface as a web page → URL |
 
-Notice the pattern: **web is the escape hatch for almost everything**, because it's the
-one artifact anyone can open with zero setup. Reach for a native toolchain only when the
-nativeness is the demo.
-
-### Scaffolding, by path
-
-```bash
-# Web (default)
-npx create-next-app@latest DEMO_NAME --ts --tailwind --app --eslint --use-npm --yes
-
-# Mobile (iOS + Android from one codebase)
-npx create-expo-app@latest DEMO_NAME
-
-# Desktop, only if truly native — otherwise use the web path above
-npm create tauri-app@latest    # lighter than Electron; still consider faking it as web first
-```
-
-Use defaults. Don't customize the tooling, the linter, or the build config — none of it
-shows up in the demo.
+Don't read all of them. Pick the target from the user's request (ask only if genuinely
+ambiguous), open that file, and go.
 
 ## Fake everything you can
 
@@ -88,32 +69,30 @@ The fastest backend is no backend. In priority order:
    Fine for a demo; nobody refreshes mid-pitch.
 3. **Device/browser local storage** — only if data must survive a refresh.
 4. **A real database** — only when persistence across *different users/devices* is the
-   actual point of the demo. Use the lightest hosted option and seed it with mock data. Last resort.
+   actual point of the demo. Use the lightest hosted option, seed it with mock data. Last resort.
 
-Specific fakes (apply on every platform):
-
-- **Auth**: skip it. If a login screen sells the demo, make *any* input succeed and route
-  straight in. Never build real auth.
-- **Payments**: a button that shows a success screen. Never integrate a real processor.
-- **Emails / notifications / push**: a toast that says "Sent!". Nothing actually sends.
-- **Uploads / camera / sensors**: accept the input, show a hardcoded result.
-- **AI features**: if the demo IS the AI, call the real API (key stays server-side) but keep
-  the integration minimal. If AI is incidental, fake a canned response.
-- **Multiplayer / real-time**: script the "other player"/"other user" with a timer, don't
-  build networking.
+Specific fakes, on every platform: **auth** — any input succeeds, route straight in, never
+build real auth. **Payments** — a button → success screen. **Email/notifications/push** — a
+toast that says "Sent!". **Uploads/camera/sensors** — accept the input, show a hardcoded
+result. **AI** — if the demo IS the AI, call the real API (key server-side) but keep it
+minimal; if AI is incidental, fake a canned response. **Multiplayer/real-time** — script the
+"other user" with a timer, don't build networking.
 
 ## Make it look real (this is where your time goes)
 
 A demo lives or dies on looking believable, so invest here:
 
-- **Realistic data, not `foo`/`bar`.** Real-sounding names, companies, dates, prices, avatars
-  (e.g. `https://i.pravatar.cc/100?img=N`), and enough rows that the screen looks alive.
-- **Polish the happy path only.** The exact click-path you'll demo should feel smooth. Anything
-  off that path can dead-end or do nothing — don't spend a second on it.
+- **Realistic data, not `foo`/`bar`.** A mock-data generator is bundled at
+  [assets/mockdata.ts](assets/mockdata.ts) — copy it into the project and import it for
+  believable names, avatars, companies, prices, dates, and paragraphs. It's zero-dependency
+  and **seeded**, so the same data shows every reload (stable screenshots, no flicker). Use it
+  instead of hand-typing fake rows or installing faker.
+- **Polish the happy path only.** The exact click-path you'll demo should feel smooth.
+  Anything off that path can dead-end or do nothing — don't spend a second on it.
 - **Decent spacing, a title, a logo/wordmark, a coherent color.** Component libraries get you
   most of the way. Loading spinners and a little animation read as "real product".
-- **Target one screen.** Make it look right at the size and orientation it'll be presented on
-  (laptop for web, a phone frame for mobile). Skip other viewports, dark-mode parity, and print.
+- **Target one screen.** Make it look right at the size and orientation it'll be presented on.
+  Skip other viewports, dark-mode parity, and print.
 
 ## Don't do (unless the user explicitly asks)
 
@@ -126,35 +105,14 @@ explaining architecture · "just in case" features. Each one is time the audienc
 
 1. **Nail the one flow (≤2 questions, then go).** Ask only what changes what you build:
    *What's the single flow the audience must see working? On what device will you show it?*
-   Don't gather requirements like it's a real project — you need just enough to fake convincingly.
-2. **Choose the path** from the table above and scaffold it.
-3. **Build the happy path**, top to bottom, wired to mock data. One flow, working, end to end.
-4. **Seed believable data** so every screen looks populated and alive.
-5. **Ship it to where the audience can open it** (see below). "Runs on my machine" is not a demo
-   anyone else can experience.
+   You need just enough to fake convincingly, not a requirements doc.
+2. **Open the playbook** for the target (table above) and scaffold as it says.
+3. **Build the happy path** top to bottom, wired to mock data. One flow, working, end to end.
+4. **Seed believable data** with `assets/mockdata.ts` so every screen looks populated and alive.
+5. **Ship it to where the audience can open it** — follow the playbook's deploy step. "Runs on
+   my machine" is not a demo anyone else can experience.
 6. **Hand off**: give the user the link/build plus a 3–5 line "demo script" of exactly what to
    click and what to say, so the pitch runs itself.
-
-## Ship it so the audience can open it
-
-The demo isn't done until the user has something to *hand over*:
-
-```bash
-# Web (default): live URL
-npm i -g vercel && vercel --yes   # then `vercel --prod` for the shareable link
-
-# Mobile: a link/QR openable in Expo Go, or a web build with a plain URL
-npx expo export -p web            # → deploy the web build like any static site
-# (or) npx eas update             # publishes an over-the-air link for Expo Go
-
-# Static builds / games (WebGL export, plain HTML): any static host
-npx netlify deploy                # or Cloudflare Pages, or `vercel`
-```
-
-If the user isn't logged into the deploy tool, tell them the one manual step (e.g. `vercel
-login`) rather than stalling. For a genuinely native desktop/mobile build that can't be a URL,
-produce the installable artifact **and** a short screen recording, so there's always something
-shareable. Always end by handing back the link (or the build path) explicitly.
 
 ## Stay honest and safe (the one place you don't cut corners)
 
