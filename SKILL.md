@@ -78,6 +78,16 @@ result. **AI** — if the demo IS the AI, call the real API (key server-side) bu
 minimal; if AI is incidental, fake a canned response. **Multiplayer/real-time** — script the
 "other user" with a timer, don't build networking.
 
+**Make the fakes wait.** An instant fake feels fake; a real product pauses to log you in or
+charge a card. A ready-made helper is bundled at [assets/simulate.ts](assets/simulate.ts) —
+copy it in and wrap the fake in a short spinner: `await fakeLogin(...)`, `await fakePayment(...)`,
+`await fakeUpload(...)`, `await fakeSend()`, or `fakeProcessing(onProgress)` for a progress bar.
+It's zero-dependency and everything succeeds by default. That half-second of loading is the
+cheapest polish you can add. If an error state is *itself* what you're demoing (a rate-limit
+banner, an offline screen, a retry-that-works), the same file has typed failure throwers —
+`fakeNetworkError`, `fakeRateLimit`, `fakeServerError`, `flakyUntil(n, …)`, and friends — but
+skip them for the happy path.
+
 ## Make it look real (this is where your time goes)
 
 A demo lives or dies on looking believable, so invest here:
