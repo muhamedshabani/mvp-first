@@ -33,6 +33,10 @@ Then drop [../assets/mockdata.ts](../assets/mockdata.ts) into `lib/mockdata.ts` 
   "real product" look for free.
 - A wordmark in the top-left + one accent color = instant credibility. No logo design needed.
 - Populate every list with 8–20 rows from `mockdata` so nothing looks empty.
+- **Charts are the money-shot on a dashboard.** Add Recharts (`npm i recharts`) and feed it
+  `mockdata`'s `timeSeries(12)` for a trending line/area chart or `categories()` for a pie/bar
+  breakdown — both are seeded and already drift up-and-to-the-right, so you skip hand-rolling
+  trend data. One `<LineChart>` + a couple of stat cards from `stats()` reads as a real product.
 
 ## Deploy → shareable URL (required)
 

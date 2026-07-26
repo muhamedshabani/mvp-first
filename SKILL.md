@@ -37,6 +37,11 @@ what they *do* see: the happy path, believable data, and something they can actu
 
 That's the whole philosophy. When in doubt, fake it and move on.
 
+**Know when to stop.** A shipped demo of the one flow beats a half-built demo of three. If you're
+roughly 45 minutes in and there's still no openable link, you're over-building — cut scope to the
+single money-shot screen, fake whatever's blocking it, and ship *that*. Time spent polishing past
+"the audience says wow" is time the audience never sees. Ship, then improve only if time is left.
+
 ## Pick the target, then open its playbook
 
 There's one rule that cuts across every platform:
@@ -97,7 +102,8 @@ A demo lives or dies on looking believable, so invest here:
 
 - **Realistic data, not `foo`/`bar`.** A mock-data generator is bundled at
   [assets/mockdata.ts](assets/mockdata.ts) — copy it into the project and import it for
-  believable names, avatars, companies, prices, dates, and paragraphs. It's zero-dependency
+  believable names, avatars, companies, prices, dates, paragraphs, and chart/trend data
+  (`timeSeries`, `categories`). It's zero-dependency
   and **seeded**, so the same data shows every reload (stable screenshots, no flicker). Use it
   instead of hand-typing fake rows or installing faker.
 - **Polish the happy path only.** The exact click-path you'll demo should feel smooth.
