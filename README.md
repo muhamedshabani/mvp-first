@@ -38,7 +38,8 @@ mvp-first/
 │   ├── games.md          # web game (Phaser/three.js) or WebGL export → URL
 │   └── cli.md            # wrap the tiny real logic in a hosted web playground
 └── assets/
-    └── mockdata.ts       # zero-dependency, seeded fake-data generator dropped into the demo
+    ├── mockdata.ts       # zero-dependency, seeded fake-data generator dropped into the demo
+    └── simulate.ts       # zero-dependency fake-delay helpers (fakeLogin/fakePayment/…) for believable waits
 ```
 
 Each playbook has the exact scaffold commands, the deploy step, and the traps to skip. There are
