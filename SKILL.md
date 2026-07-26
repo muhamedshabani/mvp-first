@@ -51,6 +51,7 @@ exact scaffold commands, the deploy step, and the traps that waste time:
 | The request is a… | Read | Default fast path |
 | --- | --- | --- |
 | Web app, SaaS, dashboard, landing, tool-with-a-UI | [references/web.md](references/web.md) | Next.js + Tailwind + shadcn → Vercel URL |
+| AI / LLM feature ("it uses AI to do X"), chatbot, copilot | [references/ai.md](references/ai.md) | Web build; canned + streamed by default, real API only if AI is the point |
 | iOS / Android / cross-platform mobile app | [references/mobile.md](references/mobile.md) | Expo → Expo Go link + QR, or web build URL |
 | Desktop app | [references/desktop.md](references/desktop.md) | Web styled as desktop; Tauri only if truly native |
 | Game | [references/games.md](references/games.md) | Web game (Phaser/three.js) or WebGL export → URL |
@@ -74,14 +75,16 @@ The fastest backend is no backend. In priority order:
 Specific fakes, on every platform: **auth** — any input succeeds, route straight in, never
 build real auth. **Payments** — a button → success screen. **Email/notifications/push** — a
 toast that says "Sent!". **Uploads/camera/sensors** — accept the input, show a hardcoded
-result. **AI** — if the demo IS the AI, call the real API (key server-side) but keep it
-minimal; if AI is incidental, fake a canned response. **Multiplayer/real-time** — script the
-"other user" with a timer, don't build networking.
+result. **AI** — if AI is incidental, fake a canned response and stream it in with `fakeStream` so it
+reads as live; if the demo IS the AI, call the real API (key server-side) but keep it to one
+call. See [references/ai.md](references/ai.md). **Multiplayer/real-time** — script the "other
+user" with a timer, don't build networking.
 
 **Make the fakes wait.** An instant fake feels fake; a real product pauses to log you in or
 charge a card. A ready-made helper is bundled at [assets/simulate.ts](assets/simulate.ts) —
 copy it in and wrap the fake in a short spinner: `await fakeLogin(...)`, `await fakePayment(...)`,
-`await fakeUpload(...)`, `await fakeSend()`, or `fakeProcessing(onProgress)` for a progress bar.
+`await fakeUpload(...)`, `await fakeSend()`, `fakeProcessing(onProgress)` for a progress bar, or
+`fakeStream(text, onToken)` to type out a canned answer like a live LLM.
 It's zero-dependency and everything succeeds by default. That half-second of loading is the
 cheapest polish you can add. If an error state is *itself* what you're demoing (a rate-limit
 banner, an offline screen, a retry-that-works), the same file has typed failure throwers —
