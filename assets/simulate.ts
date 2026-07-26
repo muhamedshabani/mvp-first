@@ -8,6 +8,8 @@
  *
  * Copy into a demo project (e.g. `lib/simulate.ts`) and import what you need.
  * Works in Next.js, React Native / Expo, and the plain browser — it's just TypeScript.
+ * Not using TypeScript? Rename it to `.js` and delete the type annotations (the `: Type`
+ * bits, `interface` blocks, and `<T>` generics) — the logic underneath is plain JS.
  *
  *   import { delay, fakeLogin, fakePayment } from "./simulate";
  *
