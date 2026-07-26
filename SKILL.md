@@ -124,8 +124,17 @@ explaining architecture · "just in case" features. Each one is time the audienc
 4. **Seed believable data** with `assets/mockdata.ts` so every screen looks populated and alive.
 5. **Ship it to where the audience can open it** — follow the playbook's deploy step. "Runs on
    my machine" is not a demo anyone else can experience.
-6. **Hand off**: give the user the link/build plus a 3–5 line "demo script" of exactly what to
-   click and what to say, so the pitch runs itself.
+6. **Verify the one flow actually works — on the shipped URL, not just locally.** This is the
+   difference between a demo that lands and one that dies in front of the client. Open the
+   deployed link yourself and click the exact happy path end to end. Use the browser tools to do
+   it: `mcp__Claude_Browser__navigate` to the URL, then `read_page` / `computer` to click through
+   the flow, and `read_console_messages` to catch a blank screen or a runtime error the deploy
+   step won't surface. Grab a screenshot of the working money-shot screen — it doubles as proof
+   and as a fallback image for the handoff if the venue's Wi-Fi dies. If anything on the path is
+   broken, fix it now; a link you never opened is not a demo you can trust.
+7. **Hand off**: give the user the link/build plus a 3–5 line "demo script" of exactly what to
+   click and what to say, so the pitch runs itself. Include the screenshot from step 6 as a
+   backup.
 
 ## Stay honest and safe (the one place you don't cut corners)
 
