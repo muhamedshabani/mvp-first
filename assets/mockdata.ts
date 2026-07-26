@@ -3,6 +3,8 @@
  *
  * Copy this file into a demo project (e.g. `lib/mockdata.ts`) and import what you need.
  * Works in Next.js, React Native / Expo, and the plain browser — it's just TypeScript.
+ * Not using TypeScript? Rename it to `.js` and delete the type annotations (the `: Type`
+ * bits, `interface` blocks, and `<T>` generics) — the logic underneath is plain JS.
  *
  * It's SEEDED: the same values come back every run, so screenshots are stable and the
  * data doesn't flicker between reloads. Call `reseed(n)` if you want a different set.
