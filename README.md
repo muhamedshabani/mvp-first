@@ -36,7 +36,8 @@ mvp-first/
 │   ├── mobile.md         # Expo (iOS + Android) → Expo Go link / web build
 │   ├── desktop.md        # web-as-desktop by default; Tauri only if truly native
 │   ├── games.md          # web game (Phaser/three.js) or WebGL export → URL
-│   └── cli.md            # wrap the tiny real logic in a hosted web playground
+│   ├── cli.md            # wrap the tiny real logic in a hosted web playground
+│   └── ai.md             # AI/LLM feature: canned + streamed by default, real API only if AI is the point
 └── assets/
     ├── mockdata.ts       # zero-dependency, seeded fake-data generator dropped into the demo
     └── simulate.ts       # zero-dependency fake-delay helpers (fakeLogin/fakePayment/…) for believable waits

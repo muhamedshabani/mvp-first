@@ -127,6 +127,34 @@ export async function fakeProcessing(
   }
 }
 
+/**
+ * Fake an LLM streaming a canned answer word-by-word — the typing effect that sells
+ * an AI demo. Calls `onToken` with each successive chunk (accumulate or append it),
+ * then resolves with the full text. Add a leading pause with `firstTokenMs` to mimic
+ * the model "thinking" before it starts.
+ *
+ *   const answer = await fakeStream(CANNED_REPLY, (chunk) => setText((t) => t + chunk));
+ *
+ * By default it streams whole words (with spaces). Pass `mode: "char"` for a slower
+ * character-by-character typewriter feel.
+ */
+export async function fakeStream(
+  text: string,
+  onToken: (chunk: string) => void,
+  opts: { perTokenMs?: number; firstTokenMs?: number; mode?: "word" | "char" } = {},
+): Promise<string> {
+  const mode = opts.mode ?? "word";
+  const perToken = opts.perTokenMs ?? (mode === "char" ? 18 : 45);
+  const tokens =
+    mode === "char" ? Array.from(text) : text.match(/\s*\S+/g) ?? [];
+  await delay(opts.firstTokenMs ?? 500);
+  for (const tok of tokens) {
+    onToken(tok);
+    await delay(perToken);
+  }
+  return text;
+}
+
 // ---- fake failures (only for when showing an error state IS the demo) ----
 // The happy path never needs these. Reach for them to demo a specific banner /
 // offline screen / retry flow. Each waits a beat, then rejects with a typed
