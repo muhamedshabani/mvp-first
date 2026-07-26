@@ -40,7 +40,7 @@ export async function withMinDelay<T>(fn: Promise<T> | (() => Promise<T>), ms = 
 }
 
 interface SimOpts {
-  /** Seconds… no. Milliseconds to wait. Omit for a random believable delay. */
+  /** Milliseconds to wait. Omit for a random believable delay. */
   ms?: number;
   /** 0–1 chance the call rejects, for demoing an error state. Default 0 (never fails). */
   failRate?: number;
