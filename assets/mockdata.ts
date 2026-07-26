@@ -74,9 +74,16 @@ export function avatar(i: number): string {
 export function price(min = 5, max = 250): string {
   return (int(min * 100, max * 100) / 100).toFixed(2);
 }
-/** ISO date within the last `days` days. */
+// Anchor for relative dates. Defaults to "today" so demo data never looks stale
+// (a fixed year in the data is an instant tell). Call `setNow(Date.parse("..."))`
+// if you need dates pinned to a specific day for byte-identical screenshots.
+let _now = Date.now();
+export function setNow(ms: number) {
+  _now = ms;
+}
+/** ISO date within the last `days` days, counting back from today (see `setNow`). */
 export function pastDate(days = 90): string {
-  const ms = Date.parse("2025-01-01T00:00:00Z") + int(0, days) * 86400000;
+  const ms = _now - int(0, days) * 86400000;
   return new Date(ms).toISOString().slice(0, 10);
 }
 export function paragraph(sentences = 3): string {
