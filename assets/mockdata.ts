@@ -175,3 +175,41 @@ export function stats(): { label: string; value: string; delta: string }[] {
   });
   return [mk("Revenue", "$"), mk("Users", "#"), mk("Orders", "#"), mk("Sessions", "#")];
 }
+
+// ---- chart data (dashboards live or die on the chart; don't hand-roll it) ----
+
+const MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+] as const;
+
+/**
+ * A trending time series for a line/area/bar chart — drifts up-and-to-the-right with
+ * believable noise (the shape a demo dashboard wants), never a flat or jagged mess.
+ * Feed straight into Recharts/Chart.js: `[{ label: "Jan", value: 1240 }, …]`.
+ *
+ *   const data = timeSeries(12);                 // 12 months, default range
+ *   const data = timeSeries(7, { min: 20, max: 90, trend: "down" });
+ */
+export function timeSeries(
+  points = 12,
+  opts: { min?: number; max?: number; trend?: "up" | "down" | "flat" } = {},
+): { label: string; value: number }[] {
+  const min = opts.min ?? 800;
+  const max = opts.max ?? 5200;
+  const dir = opts.trend === "down" ? -1 : opts.trend === "flat" ? 0 : 1;
+  const span = max - min;
+  return list(points, (i) => {
+    const progress = points > 1 ? i / (points - 1) : 0; // 0..1 along the axis
+    const base = min + span * (dir === 0 ? 0.5 : dir > 0 ? progress : 1 - progress);
+    const noise = (rnd() - 0.5) * span * 0.18; // ±18% jitter so it isn't a clean line
+    const value = Math.max(0, Math.round(base + noise));
+    return { label: points <= 12 ? MONTHS[i % 12] : `${i + 1}`, value };
+  });
+}
+
+/** Labeled slices for a pie/donut/bar breakdown. Values are whole numbers. */
+export function categories(
+  labels: readonly string[] = ["Direct", "Referral", "Organic", "Social", "Email"],
+): { label: string; value: number }[] {
+  return labels.map((label) => ({ label, value: int(40, 500) }));
+}

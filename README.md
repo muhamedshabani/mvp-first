@@ -39,7 +39,7 @@ mvp-first/
 │   ├── cli.md            # wrap the tiny real logic in a hosted web playground
 │   └── ai.md             # AI/LLM feature: canned + streamed by default, real API only if AI is the point
 └── assets/
-    ├── mockdata.ts       # zero-dependency, seeded fake-data generator dropped into the demo
+    ├── mockdata.ts       # zero-dependency, seeded fake-data generator (people, products, charts…) for the demo
     └── simulate.ts       # zero-dependency fake-delay helpers (fakeLogin/fakePayment/…) for believable waits
 ```
 
