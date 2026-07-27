@@ -1,0 +1,197 @@
+/* mvp-first — the six demo palettes, ready to paste.
+ *
+ * Drop this file into the project and import it once (`app/globals.css`,
+ * `src/index.css`, or a <link> in the HTML head). Then pick the palette the
+ * client chose by setting it on the root element:
+ *
+ *     <html data-theme="emerald">
+ *
+ * Values: blue (default) · emerald · amber · violet · teal · mono.
+ * Leave the attribute off and you get blue.
+ *
+ * Every value is contrast-checked: text clears 4.5:1 on both --bg and
+ * --surface, --on-primary clears 4.5:1 on --primary and --primary-hover,
+ * --on-soft clears 4.5:1 on --soft, --link clears 4.5:1 on both, and
+ * --primary/--accent clear 3:1 as fills.
+ * Use these tokens and you can't accidentally ship an unreadable button.
+ *
+ * --primary        main brand color: primary button and other filled surfaces
+ * --primary-hover  hover/pressed state for anything --primary
+ * --on-primary     the ONLY text/icon color allowed on --primary (see amber)
+ * --soft           tinted primary wash: badges, selected rows, callouts
+ * --on-soft        text/icon color on --soft
+ * --link           brand color at TEXT size: links, active nav labels, icon
+ *                  buttons. Not the same as --primary: amber and violet pass
+ *                  3:1 as a fill but fail 4.5:1 as text, so they get their own
+ *                  darker/lighter value here. Never set link text to --primary.
+ * --bg             page background
+ * --surface        cards, panels, table rows, modals, sidebars
+ * --text           body copy and headings
+ * --muted          secondary text, labels, timestamps, placeholders
+ * --border         hairlines, dividers, input borders
+ * --accent         charts, badges, highlights — never a primary button
+ *
+ * Don't add a color outside this list. If you need one more chart series,
+ * use --primary and --accent at different opacities.
+ */
+
+/* Deep blue + slate — fintech, B2B, enterprise SaaS, insurance */
+:root,
+[data-theme="blue"] {
+  color-scheme: light;
+  --primary: #1d4ed8;
+  --primary-hover: #1842b5;
+  --on-primary: #ffffff;
+  --soft: #e8edfb;
+  --on-soft: #1d4ed8;
+  --link: #1d4ed8;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #0284c7;
+}
+
+/* Emerald + warm neutral — finance, sustainability, wellness, agriculture */
+[data-theme="emerald"] {
+  color-scheme: light;
+  --primary: #047857;
+  --primary-hover: #036549;
+  --on-primary: #ffffff;
+  --soft: #e6f2ee;
+  --on-soft: #047857;
+  --link: #047857;
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #b45309;
+}
+
+/* Amber + charcoal — food, retail, logistics, hospitality, marketplaces.
+   The odd one out: --on-primary is DARK, and the hover state gets lighter
+   rather than darker, because darkening amber kills contrast with dark text. */
+[data-theme="amber"] {
+  color-scheme: light;
+  --primary: #d97706;
+  --primary-hover: #e0851b;
+  --on-primary: #1c1917;
+  --soft: #fbf1e6;
+  --on-soft: #92400e;
+  --link: #92400e;
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #0f766e;
+}
+
+/* Violet + near-black — AI products, developer tools, creative platforms.
+   The only dark palette here. */
+[data-theme="violet"] {
+  color-scheme: dark;
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --on-primary: #ffffff;
+  --soft: #261c3e;
+  --on-soft: #c4b5fd;
+  --link: #c4b5fd;
+  --bg: #0b0b0f;
+  --surface: #16161d;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --border: #27272a;
+  --accent: #22d3ee;
+}
+
+/* Teal + slate — health, medical, education, public sector */
+[data-theme="teal"] {
+  color-scheme: light;
+  --primary: #0f766e;
+  --primary-hover: #0d635c;
+  --on-primary: #ffffff;
+  --soft: #e7f1f0;
+  --on-soft: #0f766e;
+  --link: #0f766e;
+  --bg: #f7fafa;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #b45309;
+}
+
+/* Monochrome + one accent — agencies, editorial, luxury, portfolios */
+[data-theme="mono"] {
+  color-scheme: light;
+  --primary: #111111;
+  --primary-hover: #333333;
+  --on-primary: #ffffff;
+  --soft: #e3e3e3;
+  --on-soft: #111111;
+  --link: #e11d48;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --text: #111111;
+  --muted: #6b7280;
+  --border: #e5e5e5;
+  --accent: #e11d48;
+}
+
+/* Minimal base so the palette shows up without wiring anything else. */
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+a {
+  color: var(--link);
+}
+::selection {
+  background: var(--soft);
+  color: var(--on-soft);
+}
+
+/* --- Tailwind v4 --------------------------------------------------------
+ * Add this once, after `@import "tailwindcss"`, and the tokens become
+ * utilities: bg-primary, text-muted, border-border, hover:bg-primary-hover…
+ *
+ *   @theme inline {
+ *     --color-primary: var(--primary);
+ *     --color-primary-hover: var(--primary-hover);
+ *     --color-on-primary: var(--on-primary);
+ *     --color-soft: var(--soft);
+ *     --color-on-soft: var(--on-soft);
+ *     --color-link: var(--link);
+ *     --color-bg: var(--bg);
+ *     --color-surface: var(--surface);
+ *     --color-text: var(--text);
+ *     --color-muted: var(--muted);
+ *     --color-border: var(--border);
+ *     --color-accent: var(--accent);
+ *   }
+ *
+ * --- Tailwind v3 ---------------------------------------------------------
+ * Same idea in tailwind.config.js:
+ *
+ *   theme: { extend: { colors: {
+ *     primary: "var(--primary)", "primary-hover": "var(--primary-hover)",
+ *     "on-primary": "var(--on-primary)", soft: "var(--soft)",
+ *     "on-soft": "var(--on-soft)", link: "var(--link)", bg: "var(--bg)",
+ *     surface: "var(--surface)",
+ *     text: "var(--text)", muted: "var(--muted)", border: "var(--border)",
+ *     accent: "var(--accent)",
+ *   } } }
+ *
+ * --- shadcn/ui -----------------------------------------------------------
+ * shadcn expects its own names. Map the overlapping ones in the same :root
+ * block rather than editing components:
+ *   --background: var(--bg);        --foreground: var(--text);
+ *   --card: var(--surface);         --card-foreground: var(--text);
+ *   --primary-foreground: var(--on-primary);
+ *   --muted-foreground: var(--muted);
+ *   --input: var(--border);         --ring: var(--primary);
+ * Keep using --link for anything link-sized; shadcn has no equivalent token.
+ * ------------------------------------------------------------------------ */

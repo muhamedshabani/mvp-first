@@ -42,6 +42,63 @@ roughly 45 minutes in and there's still no openable link, you're over-building �
 single money-shot screen, fake whatever's blocking it, and ship *that*. Time spent polishing past
 "the audience says wow" is time the audience never sees. Ship, then improve only if time is left.
 
+## Before any code: get the brief
+
+A demo lands because the client recognises **their** product on the screen. So the demo always
+follows the **client's main business logic** — the screens, the objects, the vocabulary and the
+steps come from how their business actually works, never from a generic dashboard template with
+the nouns swapped out. If you don't know their core flow, you can't fake it convincingly.
+
+Three things you cannot guess and must ask for **before writing a line of code**:
+
+- **Color palette** — offer the six below as checkbox options, always with an "other" free-text
+  escape for the client's own hex codes. If they have brand colors, those win over any preset.
+- **Company name / brand** — the wordmark that goes top-left on every screen, plus one line on
+  what the business actually does. That line is what drives the business logic above.
+- **Display language** — the language every label, button and mock data row is written in. Ask
+  early because retrofitting copy across finished screens is pure waste, and because RTL
+  languages (Arabic, Hebrew) change the layout, not just the strings.
+
+Ask all of them in **one** `AskUserQuestion` round, before scaffolding. Add at most one or two
+more questions to that same round when the answer genuinely changes what you build — the single
+flow the audience must see, the device it'll be shown on, breadth vs. depth. Anything you could
+reasonably decide yourself, decide yourself.
+
+Then stop asking and build. This is still single-prompt demo development: one round of
+questions, then a finished demo — not a requirements interview. If the user skips or dismisses
+the questions, pick sensible defaults, say what you picked, and keep going.
+
+### The six palettes
+
+Every row is a complete, contrast-checked set. All six are ready to paste at
+[assets/theme.css](assets/theme.css) — copy that file in, set `<html data-theme="emerald">` to
+the palette they chose, and you're themed. It carries four more tokens derived from each row —
+`--primary-hover`, `--soft`, `--on-soft`, and `--link` — plus the Tailwind and shadcn mappings.
+Use those twelve tokens and nothing outside them.
+
+| Palette | `--primary` | `--on-primary` | `--bg` | `--surface` | `--text` | `--muted` | `--border` | `--accent` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **Deep blue + slate** | `#1D4ED8` | `#FFFFFF` | `#F8FAFC` | `#FFFFFF` | `#0F172A` | `#64748B` | `#E2E8F0` | `#0284C7` |
+| **Emerald + warm neutral** | `#047857` | `#FFFFFF` | `#FAF9F6` | `#FFFFFF` | `#1C1917` | `#78716C` | `#E7E5E4` | `#B45309` |
+| **Amber + charcoal** | `#D97706` | `#1C1917` | `#FAFAF9` | `#FFFFFF` | `#1C1917` | `#78716C` | `#E7E5E4` | `#0F766E` |
+| **Violet + near-black** (dark) | `#7C3AED` | `#FFFFFF` | `#0B0B0F` | `#16161D` | `#F4F4F5` | `#A1A1AA` | `#27272A` | `#22D3EE` |
+| **Teal + slate** | `#0F766E` | `#FFFFFF` | `#F7FAFA` | `#FFFFFF` | `#0F172A` | `#64748B` | `#E2E8F0` | `#B45309` |
+| **Monochrome + one accent** | `#111111` | `#FFFFFF` | `#FFFFFF` | `#FAFAFA` | `#111111` | `#6B7280` | `#E5E5E5` | `#E11D48` |
+
+Which to suggest when you know the industry: **deep blue** for fintech, B2B, enterprise SaaS,
+insurance · **emerald** for finance, sustainability, wellness, agriculture · **amber** for food,
+retail, logistics, hospitality, marketplaces · **violet (dark)** for AI products, developer
+tools, creative platforms · **teal** for health, medical, education, public sector ·
+**monochrome** for agencies, editorial, luxury, portfolios.
+
+Rules for using them: `--on-primary` is the only text color allowed on a primary-colored button
+— note the amber row needs dark text, not white. `--accent` is for charts, badges and highlight
+states, never for primary buttons. Link and nav text takes `--link`, not `--primary` — in the
+amber and violet rows the primary is fine as a button fill but too low-contrast as text, which is
+exactly the mistake this token exists to prevent. Hover states are already in `theme.css` as
+`--primary-hover`; don't invent extra colors beyond the tokens there. Only the violet row is a
+dark UI — don't build the others dark-mode too.
+
 ## Pick the target, then open its playbook
 
 There's one rule that cuts across every platform:
@@ -103,13 +160,19 @@ A demo lives or dies on looking believable, so invest here:
 - **Realistic data, not `foo`/`bar`.** A mock-data generator is bundled at
   [assets/mockdata.ts](assets/mockdata.ts) — copy it into the project and import it for
   believable names, avatars, companies, prices, dates, paragraphs, and chart/trend data
-  (`timeSeries`, `categories`). It's zero-dependency
-  and **seeded**, so the same data shows every reload (stable screenshots, no flicker). Use it
-  instead of hand-typing fake rows or installing faker.
+  (`timeSeries`, `categories`). It's zero-dependency and **seeded**, so the same data shows every
+  reload (stable screenshots, no flicker). Use it instead of hand-typing fake rows or installing
+  faker. Its word banks (`FIRST`, `LAST`,
+  `COMPANY_*`, `PRODUCTS`, `STATUSES`, `WORDS`) are plain arrays at the top of the file — when the
+  demo isn't in English, or the client's domain isn't consumer retail, swap those arrays for
+  names, companies and product terms from their language and industry. English rows under a
+  German UI is the fastest way to make a demo look like a template.
 - **Polish the happy path only.** The exact click-path you'll demo should feel smooth.
   Anything off that path can dead-end or do nothing — don't spend a second on it.
-- **Decent spacing, a title, a logo/wordmark, a coherent color.** Component libraries get you
-  most of the way. Loading spinners and a little animation read as "real product".
+- **Use the brief.** Wire the answered palette in as theme tokens/CSS variables on day one rather
+  than sprinkling hex codes, set the brand wordmark top-left on every screen, and write every
+  label *and* every mock row in the chosen display language. Component libraries get you most of
+  the way on spacing; loading spinners and a little animation read as "real product".
 - **Target one screen.** Make it look right at the size and orientation it'll be presented on.
   Skip other viewports, dark-mode parity, and print.
 
@@ -122,9 +185,10 @@ explaining architecture · "just in case" features. Each one is time the audienc
 
 ## The workflow
 
-1. **Nail the one flow (≤2 questions, then go).** Ask only what changes what you build:
-   *What's the single flow the audience must see working? On what device will you show it?*
-   You need just enough to fake convincingly, not a requirements doc.
+1. **Get the brief in one round of questions, then go.** Palette, brand, and display language are
+   mandatory; add the one flow the audience must see and the device it's shown on if unclear. See
+   [Before any code: get the brief](#before-any-code-get-the-brief). Just enough to fake
+   convincingly, not a requirements doc.
 2. **Open the playbook** for the target (table above) and scaffold as it says.
 3. **Build the happy path** top to bottom, wired to mock data. One flow, working, end to end.
 4. **Seed believable data** with `assets/mockdata.ts` so every screen looks populated and alive.

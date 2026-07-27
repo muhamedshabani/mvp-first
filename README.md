@@ -13,8 +13,11 @@ impressive **today**.
 
 ## What it does
 
-- Runs every decision through one filter: *will the audience notice this in the demo?* If not,
-  fake it or skip it.
+- Opens with **one** round of questions — color palette, brand name, display language (plus the
+  key flow if it's unclear) — then builds the whole demo without further interruption. The
+  screens follow the client's real business logic, not a template with the nouns swapped.
+- Runs every other decision through one filter: *will the audience notice this in the demo?* If
+  not, fake it or skip it.
 - Defaults to a web app (Next.js + Tailwind + shadcn/ui) deployed to a live URL, and picks the
   fastest shareable path for other targets (Expo for mobile, WebGL export for games, etc.).
 - Fakes auth, payments, email, uploads, and databases so there's no backend to slow you down.
@@ -40,7 +43,8 @@ mvp-first/
 │   └── ai.md             # AI/LLM feature: canned + streamed by default, real API only if AI is the point
 └── assets/
     ├── mockdata.ts       # zero-dependency, seeded fake-data generator (people, products, charts…) for the demo
-    └── simulate.ts       # zero-dependency fake-delay helpers (fakeLogin/fakePayment/…) for believable waits
+    ├── simulate.ts       # zero-dependency fake-delay helpers (fakeLogin/fakePayment/…) for believable waits
+    └── theme.css         # the six contrast-checked palettes as CSS variables, switched by data-theme
 ```
 
 Each playbook has the exact scaffold commands, the deploy step, and the traps to skip. There are
